@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oasis Dental | Adults, Kids & Braces — Aurora, CO</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan:       #00D4F5;
+    --cyan-light: #7EEEFF;
+    --cyan-pale:  #E8FBFF;
+    --cyan-mid:   #00B8D9;
+    --cyan-dark:  #0099B5;
+    --cyan-deep:  #006678;
+
+    --navy:       #0A1628;
+    --navy-mid:   #1E3A5F;
+
+    --gray-900:   #1A1A1A;
+    --gray-700:   #3D3D3D;
+    --gray-500:   #717171;
+    --gray-300:   #C4C4C4;
+    --gray-100:   #F2F2F2;
+    --gray-50:    #FAFAFA;
+
+    --white:      #FFFFFF;
+
+    --display: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --sans:    'Inter', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--white); color: var(--gray-900); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; }
+
+  /* ── UTILITY BAR ── */
+  .utility-bar {
+    background: rgba(250,250,250,0.95);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 8px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
+  }
+  .utility-left { display: flex; gap: 24px; align-items: center; }
+  .utility-left a, .utility-left span { color: var(--gray-500); text-decoration: none; transition: color 0.2s; }
+  .utility-left a:hover { color: var(--cyan-dark); }
+  .utility-sep { color: var(--gray-300); }
+  .utility-right { display: flex; gap: 10px; }
+  .btn-sm {
+    padding: 6px 18px; border-radius: 40px;
+    font-family: var(--sans); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.04em; text-decoration: none; cursor: pointer;
+    border: none; transition: all 0.22s;
+  }
+  .btn-sm.ghost { background: transparent; border: 1px solid var(--gray-300); color: var(--gray-700); }
+  .btn-sm.ghost:hover { border-color: var(--cyan-dark); color: var(--cyan-dark); }
+  .btn-sm.filled { background: var(--cyan); color: var(--navy); font-weight: 600; }
+  .btn-sm.filled:hover { background: var(--cyan-light); }
+
+  /* ── NAV ── */
+  nav {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 0 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark {
+    width: 34px; height: 34px; background: var(--cyan); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .logo-mark svg { width: 16px; height: 16px; fill: var(--navy); }
+  .logo-wordmark { font-family: var(--display); font-size: 19px; font-weight: 700; color: var(--gray-900); letter-spacing: -0.02em; line-height: 1; }
+  .logo-tagline { font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-500); margin-top: 2px; }
+  .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
+  .nav-links > li > a {
+    font-size: 13px; font-weight: 400; color: var(--gray-700); text-decoration: none;
+    letter-spacing: -0.005em; transition: color 0.2s;
+  }
+  .nav-links > li > a:hover { color: var(--cyan-dark); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 60px 80px;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .orb1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,245,0.07) 0%, transparent 70%);
+    top: -150px; right: -100px;
+  }
+  .orb2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,212,245,0.05) 0%, transparent 70%);
+    bottom: 0; left: -80px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--cyan-dark); font-weight: 500; margin-bottom: 32px;
+  }
+  .hero-eyebrow-dot { width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; }
+  .hero-title {
+    font-family: var(--display);
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1.08;
+    color: var(--gray-900);
+    max-width: 760px;
+    margin: 0 auto 28px;
+    letter-spacing: -0.03em;
+    position: relative; z-index: 1;
+  }
+  .hero-title .accent { color: var(--cyan-mid); }
+  .hero-body {
+    font-size: 16px; color: var(--gray-500); line-height: 1.65; font-weight: 400;
+    max-width: 480px; margin: 0 auto 48px;
+    position: relative; z-index: 1; letter-spacing: -0.01em;
+  }
+  .hero-ctas { display: flex; gap: 14px; justify-content: center; position: relative; z-index: 1; }
+  .btn-primary {
+    background: var(--cyan); color: var(--navy);
+    padding: 15px 38px; border: none; border-radius: 40px;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    letter-spacing: 0.04em; cursor: pointer; text-decoration: none;
+    transition: all 0.22s;
+  }
+  .btn-primary:hover { background: var(--cyan-light); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent; color: var(--gray-700);
+    padding: 15px 38px; border: 1px solid var(--gray-300); border-radius: 40px;
+    font-family: var(--sans); font-size: 14px; font-weight: 400;
+    letter-spacing: 0.04em; cursor: pointer; text-decoration: none;
+    transition: all 0.22s;
+  }
+  .btn-ghost:hover { border-color: var(--cyan-dark); color: var(--cyan-dark); transform: translateY(-1px); }
+  .hero-image-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 80px;
+    width: 100%;
+    max-width: 1000px;
+    position: relative; z-index: 1;
+  }
+  .hero-img-cell {
+    aspect-ratio: 16/9;
+    background: var(--gray-100);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 13px; color: var(--gray-300);
+    letter-spacing: 0.05em;
+  }
+  .hero-img-cell.tall { aspect-ratio: 3/4; }
+  .hero-stats {
+    display: flex; gap: 64px; justify-content: center; align-items: center;
+    margin-top: 72px; padding-top: 56px;
+    border-top: 1px solid var(--gray-100);
+    width: 100%; position: relative; z-index: 1;
+  }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: var(--display); font-size: 32px; font-weight: 700; color: var(--gray-900); line-height: 1; letter-spacing: -0.03em; }
+  .stat-label { font-size: 12px; color: var(--gray-500); margin-top: 6px; letter-spacing: 0.04em; }
+
+  /* ── TRUST STRIP ── */
+  .trust-strip {
+    background: var(--cyan-pale);
+    padding: 18px 60px;
+    display: flex; justify-content: center; gap: 48px; align-items: center; flex-wrap: wrap;
+  }
+  .trust-item { display: flex; align-items: center; gap: 8px; color: var(--cyan-deep); font-size: 13px; font-weight: 500; }
+  .trust-check {
+    width: 20px; height: 20px; background: var(--cyan); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-size: 10px; color: var(--navy); font-weight: 700;
+  }
+
+  /* ── SHARED ── */
+  section { padding: 112px 60px; }
+  .section-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan-dark); margin-bottom: 14px; }
+  .section-title { font-family: var(--display); font-size: 38px; font-weight: 700; line-height: 1.12; color: var(--gray-900); margin-bottom: 16px; letter-spacing: -0.025em; }
+  .section-sub { font-size: 15px; color: var(--gray-500); max-width: 500px; line-height: 1.72; font-weight: 400; letter-spacing: -0.005em; }
+  .section-header { margin-bottom: 64px; }
+
+  /* ── SERVICES ── */
+  .services { background: var(--white); }
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--gray-100); border-radius: 16px; overflow: hidden; }
+  .service-card {
+    background: var(--white); padding: 52px 48px;
+    text-decoration: none; display: block; transition: background 0.22s;
+    position: relative;
+  }
+  .service-card:hover { background: var(--gray-50); }
+  .service-num {
+    font-family: var(--display); font-size: 13px; color: var(--gray-300);
+    letter-spacing: 0.08em; margin-bottom: 28px; display: block;
+  }
+  .service-name { font-family: var(--display); font-size: 22px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; letter-spacing: -0.02em; }
+  .service-desc { font-size: 14px; color: var(--gray-500); line-height: 1.72; max-width: 380px; }
+  .service-arrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 24px; font-size: 13px; color: var(--cyan-dark); font-weight: 500;
+    text-decoration: none; transition: gap 0.2s;
+  }
+  .service-card:hover .service-arrow { gap: 10px; }
+  .service-tag {
+    position: absolute; top: 52px; right: 48px;
+    width: 44px; height: 44px; background: var(--cyan-pale); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .service-tag svg { width: 20px; height: 20px; stroke: var(--cyan-dark); fill: none; stroke-width: 1.5; }
+
+  /* ── VALUES ── */
+  .values { background: var(--gray-50); }
+  .values-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  .values-grid { display: flex; flex-direction: column; gap: 2px; }
+  .value-row {
+    background: var(--white); padding: 36px 40px;
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 24px; align-items: start;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .value-row:last-child { border-bottom: none; }
+  .value-num-lg { font-family: var(--display); font-size: 48px; font-weight: 300; color: var(--cyan); line-height: 1; opacity: 0.4; }
+  .value-title { font-family: var(--display); font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .value-desc { font-size: 13.5px; color: var(--gray-500); line-height: 1.72; }
+  .value-list { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 7px; }
+  .value-list li { font-size: 13px; color: var(--gray-700); padding-left: 16px; position: relative; line-height: 1.5; }
+  .value-list li::before { content: ''; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); }
+
+  /* ── DOCTORS ── */
+  .doctors { background: var(--white); }
+  .doctors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gray-100); border-radius: 16px; overflow: hidden; }
+  .doctor-card { background: var(--white); padding: 40px 36px; transition: background 0.2s; }
+  .doctor-card:hover { background: var(--gray-50); }
+  .doctor-initials {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--cyan-pale); border: 1.5px solid var(--cyan);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 18px; color: var(--cyan-dark);
+    margin-bottom: 20px;
+  }
+  .doctor-name { font-family: var(--display); font-size: 17px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; letter-spacing: -0.015em; }
+  .doctor-role { font-size: 11px; color: var(--cyan-dark); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; margin-bottom: 12px; }
+  .doctor-desc { font-size: 13px; color: var(--gray-500); line-height: 1.65; }
+
+  /* ── BEFORE/AFTER ── */
+  .ba-section { background: var(--gray-50); }
+  .ba-inner { max-width: 1100px; margin: 0 auto; }
+  .ba-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .ba-pair { display: flex; flex-direction: column; gap: 5px; }
+  .ba-img {
+    aspect-ratio: 3/4; background: var(--gray-100); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 13px; color: var(--gray-300); letter-spacing: 0.04em;
+  }
+  .ba-img.after { background: var(--cyan-pale); color: var(--cyan-dark); }
+  .ba-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-300); padding-left: 2px; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--white); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .t-card {
+    padding: 44px 40px;
+    background: var(--gray-50);
+    border-radius: 16px;
+    position: relative;
+  }
+  .t-card::before {
+    content: '"';
+    position: absolute; top: 24px; left: 36px;
+    font-family: var(--display); font-size: 72px; line-height: 1;
+    color: var(--cyan); opacity: 0.3; font-weight: 300;
+  }
+  .t-stars { display: flex; gap: 3px; margin-bottom: 20px; }
+  .t-star { width: 13px; height: 13px; fill: var(--cyan); }
+  .t-quote { font-family: var(--sans); font-size: 15px; font-style: italic; color: var(--gray-700); line-height: 1.72; margin-bottom: 24px; padding-top: 8px; font-weight: 400; letter-spacing: -0.005em; }
+  .t-divider { width: 32px; height: 1.5px; background: var(--cyan); margin-bottom: 16px; }
+  .t-author { font-size: 13px; color: var(--gray-500); font-weight: 500; }
+
+  /* ── MEMBERSHIP ── */
+  .membership { background: var(--gray-50); }
+  .membership-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .membership-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 56px 52px;
+    border: 1px solid var(--gray-100);
+    position: relative; overflow: hidden;
+  }
+  .membership-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--cyan) 0%, var(--cyan-light) 100%);
+  }
+  .membership-label {
+    display: inline-block; background: var(--cyan-pale); color: var(--cyan-deep);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 40px; font-weight: 500; margin-bottom: 20px;
+  }
+  .membership-card h3 { font-family: var(--display); font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; letter-spacing: -0.02em; }
+  .membership-card .subtitle { font-size: 13px; color: var(--gray-500); margin-bottom: 28px; }
+  .price-row { display: flex; align-items: baseline; gap: 2px; margin-bottom: 32px; }
+  .price-dollar { font-size: 20px; color: var(--gray-900); font-family: var(--display); font-weight: 300; }
+  .price-num { font-family: var(--display); font-size: 56px; font-weight: 300; color: var(--gray-900); line-height: 1; letter-spacing: -0.04em; }
+  .price-period { font-size: 14px; color: var(--gray-500); margin-left: 4px; }
+  .membership-divider { height: 1px; background: var(--gray-100); margin-bottom: 28px; }
+  .membership-perks { list-style: none; margin-bottom: 36px; display: flex; flex-direction: column; gap: 12px; }
+  .membership-perks li { font-size: 14px; color: var(--gray-700); padding-left: 24px; position: relative; }
+  .membership-perks li::before { content: '✓'; position: absolute; left: 0; color: var(--cyan-dark); font-weight: 600; }
+  .btn-cta {
+    background: var(--cyan); color: var(--navy);
+    padding: 15px 36px; border: none; border-radius: 40px;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    letter-spacing: 0.04em; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: all 0.22s;
+  }
+  .btn-cta:hover { background: var(--cyan-light); transform: translateY(-1px); }
+  .btn-text-link {
+    display: inline-block; margin-top: 16px; margin-left: 20px;
+    font-size: 14px; color: var(--gray-500); text-decoration: none;
+    border-bottom: 1px solid var(--gray-300); padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-text-link:hover { color: var(--cyan-dark); border-color: var(--cyan-dark); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--gray-900); padding: 80px 60px 44px; }
+  .footer-top {
+    display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 64px; padding-bottom: 64px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .f-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; text-decoration: none; }
+  .f-logo-text { font-family: var(--display); font-size: 19px; font-weight: 700; color: var(--white); letter-spacing: -0.02em; }
+  .f-tagline { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.75; max-width: 230px; margin-bottom: 28px; }
+  .f-socials { display: flex; gap: 10px; }
+  .f-soc {
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 500;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .f-soc:hover { border-color: var(--cyan); color: var(--cyan); }
+  .f-col h4 { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 20px; font-weight: 500; }
+  .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .f-col ul li a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
+  .f-col ul li a:hover { color: var(--cyan); }
+  .hour-row { display: flex; justify-content: space-between; font-size: 12.5px; color: rgba(255,255,255,0.35); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); gap: 12px; }
+  .hour-row:last-child { border-bottom: none; opacity: 0.5; }
+  .footer-bottom { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.25); }
+  .footer-bottom a { color: rgba(0,212,245,0.6); text-decoration: none; transition: color 0.2s; }
+  .footer-bottom a:hover { color: var(--cyan); }
+
+  /* ── FEATURE BAND ── */
+  .feature-band {
+    background: var(--navy);
+    padding: 80px 60px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px; background: var(--navy);
+  }
+  .feature-item {
+    padding: 56px 48px;
+    background: var(--navy);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .feature-item:last-child { border-right: none; }
+  .feature-item::before { content: ''; position: absolute; top: 0; left: 48px; right: 48px; height: 1px; background: rgba(0,212,245,0.15); }
+  .feature-num { font-family: var(--display); font-size: 52px; font-weight: 300; color: var(--cyan); line-height: 1; margin-bottom: 20px; opacity: 0.5; }
+  .feature-title { font-family: var(--display); font-size: 22px; color: var(--white); margin-bottom: 12px; font-weight: 700; letter-spacing: -0.02em; }
+  .feature-desc { font-size: 13.5px; color: rgba(255,255,255,0.4); line-height: 1.72; }
+  .feature-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .feature-list li { font-size: 13px; color: rgba(255,255,255,0.45); padding-left: 16px; position: relative; }
+  .feature-list li::before { content: ''; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<!-- UTILITY BAR -->
+<div class="utility-bar">
+  <div class="utility-left">
+    <a href="tel:7206802688">&#9742; (720) 680-2688</a>
+    <span class="utility-sep">|</span>
+    <a href="https://maps.app.goo.gl/xnQKUASNpy9aRt2DA">990 S Abilene St, Aurora, CO</a>
+    <span class="utility-sep">|</span>
+    <span>Hablamos Español</span>
+  </div>
+  <div class="utility-right">
+    <a href="https://dental4.me/oasisdental/1" class="btn-sm ghost">Schedule Kids</a>
+    <a href="https://dental4.me/oasisdental/1" class="btn-sm filled">Schedule Adults</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.5 2 5 5.5 5 9.5c0 5.5 7 12.5 7 12.5s7-7 7-12.5C19 5.5 15.5 2 12 2z"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
+    </div>
+    <div>
+      <div class="logo-wordmark">Oasis Dental</div>
+      <div class="logo-tagline">Adults · Kids · Braces</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Adults</a></li>
+    <li><a href="#">Kids</a></li>
+    <li><a href="#">Dental Implants</a></li>
+    <li><a href="#">Orthodontics</a></li>
+    <li><a href="#">Pricing &amp; Offers</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-orb orb1"></div>
+  <div class="hero-bg-orb orb2"></div>
+
+  <p class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    Family Dentistry · Aurora, Colorado
+    <span class="hero-eyebrow-dot"></span>
+  </p>
+
+  <h1 class="hero-title">
+    Your family deserves<br>a <span class="accent">smile</span> they love.
+  </h1>
+
+  <p class="hero-body">
+    Adults, kids, and orthodontics all under one roof. Six specialized providers, same-week appointments, and care that actually feels good.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="https://dental4.me/oasisdental/1" class="btn-primary">Schedule Adults</a>
+    <a href="https://dental4.me/oasisdental/1" class="btn-ghost">Schedule Kids</a>
+  </div>
+
+  <div class="hero-image-strip">
+    <div class="hero-img-cell">Office Photography</div>
+    <div class="hero-img-cell" style="background: var(--cyan-pale); color: var(--cyan-dark);">Patient Care</div>
+    <div class="hero-img-cell">Modern Equipment</div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-num">6+</div><div class="stat-label">Providers on staff</div></div>
+    <div class="stat-item"><div class="stat-num">All ages</div><div class="stat-label">Kids &amp; adults welcome</div></div>
+    <div class="stat-item"><div class="stat-num">Mon–Sat</div><div class="stat-label">Extended hours</div></div>
+    <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Patient rating</div></div>
+  </div>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-item"><div class="trust-check">✓</div>Most insurances accepted</div>
+  <div class="trust-item"><div class="trust-check">✓</div>Free nitrous for members</div>
+  <div class="trust-item"><div class="trust-check">✓</div>Same-week appointments</div>
+  <div class="trust-item"><div class="trust-check">✓</div>IV sedation on-site</div>
+  <div class="trust-item"><div class="trust-check">✓</div>Visual diagnoses every visit</div>
+</div>
+
+<!-- SERVICES -->
+<section class="services">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-header" style="max-width: 600px;">
+      <p class="section-eyebrow">What we offer</p>
+      <h2 class="section-title">Every service your family needs.</h2>
+      <p class="section-sub">From first cleanings to full-mouth restorations — most procedures handled in-house, no referrals needed.</p>
+    </div>
+    <div class="services-grid">
+      <a href="#" class="service-card">
+        <div class="service-tag"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M12 7V5M8 7V5M16 7V5"/></svg></div>
+        <span class="service-num">01</span>
+        <div class="service-name">Adult Dentistry</div>
+        <p class="service-desc">Cleanings, fillings, crowns, root canals, cosmetics, and extractions — comprehensive care for adults of all ages, handled in our Aurora office.</p>
+        <span class="service-arrow">Explore services <span>→</span></span>
+      </a>
+      <a href="#" class="service-card">
+        <div class="service-tag"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></div>
+        <span class="service-num">02</span>
+        <div class="service-name">Kids Dentistry</div>
+        <p class="service-desc">Gentle, patient care designed to make kids feel at home. Sealants, space maintainers, pediatric extractions — all in a warm, welcoming environment.</p>
+        <span class="service-arrow">Explore services <span>→</span></span>
+      </a>
+      <a href="#" class="service-card">
+        <div class="service-tag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <span class="service-num">03</span>
+        <div class="service-name">Dental Implants</div>
+        <p class="service-desc">Permanent, natural-feeling tooth replacement. Titanium implants placed and restored right here — no specialist referrals, no extra trips.</p>
+        <span class="service-arrow">Learn more <span>→</span></span>
+      </a>
+      <a href="#" class="service-card">
+        <div class="service-tag"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <span class="service-num">04</span>
+        <div class="service-name">Orthodontics</div>
+        <p class="service-desc">Metal braces and clear aligners for teens and adults. Achieve a straighter, more confident smile at any stage of life.</p>
+        <span class="service-arrow">Learn more <span>→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES — light layout, navy used only as accent -->
+<div class="feature-band">
+  <div class="feature-item">
+    <div class="feature-num">01</div>
+    <div class="feature-title">Affordable</div>
+    <p class="feature-desc">Quality dental care shouldn't depend on your insurance status.</p>
+    <ul class="feature-list">
+      <li>Oasis Membership Plan</li>
+      <li>Flexible payment plans</li>
+      <li>Most insurances accepted</li>
+    </ul>
+  </div>
+  <div class="feature-item">
+    <div class="feature-num">02</div>
+    <div class="feature-title">Transparent</div>
+    <p class="feature-desc">No surprises — we show and explain everything before you decide.</p>
+    <ul class="feature-list">
+      <li>Visual diagnoses every visit</li>
+      <li>Clear pricing upfront</li>
+      <li>Your needs always come first</li>
+    </ul>
+  </div>
+  <div class="feature-item">
+    <div class="feature-num">03</div>
+    <div class="feature-title">Comfortable</div>
+    <p class="feature-desc">Designed to put every member of your family at ease.</p>
+    <ul class="feature-list">
+      <li>Adults and kids, one location</li>
+      <li>Hablamos Español</li>
+      <li>Nitrous &amp; IV sedation available</li>
+    </ul>
+  </div>
+</div>
+
+<!-- DOCTORS -->
+<section class="doctors">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-header">
+      <p class="section-eyebrow">Our providers</p>
+      <h2 class="section-title">A team that truly collaborates.</h2>
+      <p class="section-sub">Six specialized providers covering nearly every dental need in-house — general, pediatric, cosmetic, implants, sedation, and orthodontics.</p>
+    </div>
+    <div class="doctors-grid">
+      <div class="doctor-card"><div class="doctor-initials">DH</div><div class="doctor-name">Dr. Habib</div><div class="doctor-role">General &amp; Restorative</div><p class="doctor-desc">Comprehensive adult care focused on restorative and prosthetic solutions.</p></div>
+      <div class="doctor-card"><div class="doctor-initials">DD</div><div class="doctor-name">Dr. Dinesh</div><div class="doctor-role">General &amp; Cosmetic</div><p class="doctor-desc">Specializing in cosmetic procedures, veneers, and smile transformations.</p></div>
+      <div class="doctor-card"><div class="doctor-initials">DQ</div><div class="doctor-name">Dr. Quynh</div><div class="doctor-role">Pediatric &amp; Family</div><p class="doctor-desc">Renowned for patience and a gentle touch with children and anxious patients.</p></div>
+      <div class="doctor-card"><div class="doctor-initials">DR</div><div class="doctor-name">Dr. Ryan</div><div class="doctor-role">General &amp; Sedation</div><p class="doctor-desc">Expert in IV sedation and complex adult dental care procedures.</p></div>
+      <div class="doctor-card"><div class="doctor-initials">DY</div><div class="doctor-name">Dr. Yi</div><div class="doctor-role">Orthodontics</div><p class="doctor-desc">Braces and clear aligner specialist for teens and adults.</p></div>
+      <div class="doctor-card"><div class="doctor-initials">Y</div><div class="doctor-name">Yessenya</div><div class="doctor-role">Lead Hygienist</div><p class="doctor-desc">Thorough cleanings and patient education keeping oral health on track.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE/AFTER -->
+<section class="ba-section">
+  <div class="ba-inner">
+    <div class="section-header">
+      <p class="section-eyebrow">Results</p>
+      <h2 class="section-title">Before &amp; after.</h2>
+      <p class="section-sub">Real transformations from real Oasis patients.</p>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-pair"><div class="ba-img">Before</div><div class="ba-label">Before</div><div class="ba-img after">After</div><div class="ba-label">After</div></div>
+      <div class="ba-pair"><div class="ba-img">Before</div><div class="ba-label">Before</div><div class="ba-img after">After</div><div class="ba-label">After</div></div>
+      <div class="ba-pair"><div class="ba-img">Before</div><div class="ba-label">Before</div><div class="ba-img after">After</div><div class="ba-label">After</div></div>
+      <div class="ba-pair"><div class="ba-img">Before</div><div class="ba-label">Before</div><div class="ba-img after">After</div><div class="ba-label">After</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-header">
+      <p class="section-eyebrow">Patient stories</p>
+      <h2 class="section-title">What our patients say.</h2>
+      <p class="section-sub">Hundreds of five-star reviews from families across Aurora and the Denver metro.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="t-card">
+        <div class="t-stars"><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+        <p class="t-quote">"Dr. Quynh is the best! She made my kids feel completely comfortable — my little one didn't cry at all. I HIGHLY recommend Oasis for the whole family."</p>
+        <div class="t-divider"></div>
+        <div class="t-author">S. Minaya — Aurora, CO</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars"><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+        <p class="t-quote">"Modern vibe, quick check-in, and high-tech care. Dr. Ryan explained everything and gave personalized tips. A fantastic experience — highly recommend."</p>
+        <div class="t-divider"></div>
+        <div class="t-author">Darlene C. — Aurora, CO</div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars"><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg class="t-star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+        <p class="t-quote">"I avoided the dentist for years, but Dr. Quynh was patient, kind, and incredibly gentle. I'm so grateful she fixed my smile — I'd recommend her to anyone."</p>
+        <div class="t-divider"></div>
+        <div class="t-author">Jalen R. — Denver, CO</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership">
+  <div class="membership-inner">
+    <div>
+      <p class="section-eyebrow">Oasis membership</p>
+      <h2 class="section-title">No insurance?<br>No problem.</h2>
+      <p class="section-sub" style="margin-bottom: 40px;">We believe everyone deserves access to excellent dental care. Our membership plan gives you everything you need at a price designed for real families.</p>
+      <a href="#" class="btn-cta">Learn about membership</a>
+      <a href="#" class="btn-text-link">View all pricing &amp; specials</a>
+    </div>
+    <div class="membership-card">
+      <span class="membership-label">Most popular plan</span>
+      <h3>Oasis Membership</h3>
+      <p class="subtitle">Annual plan — individuals &amp; families</p>
+      <div class="price-row">
+        <span class="price-dollar">$</span>
+        <span class="price-num">199</span>
+        <span class="price-period">/ year</span>
+      </div>
+      <div class="membership-divider"></div>
+      <ul class="membership-perks">
+        <li>2 professional cleanings &amp; exams</li>
+        <li>Annual X-rays included</li>
+        <li>Free nitrous oxide on every visit</li>
+        <li>20% off all additional procedures</li>
+        <li>No waiting periods</li>
+        <li>No annual maximums</li>
+      </ul>
+      <a href="#" class="btn-cta">Join today</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a href="#" class="f-logo-row">
+        <div class="logo-mark"><svg viewBox="0 0 24 24" width="16" height="16" fill="var(--navy)"><path d="M12 2C8.5 2 5 5.5 5 9.5c0 5.5 7 12.5 7 12.5s7-7 7-12.5C19 5.5 15.5 2 12 2z"/></svg></div>
+        <span class="f-logo-text">Oasis Dental</span>
+      </a>
+      <p class="f-tagline">Comprehensive family dentistry for adults, kids, and orthodontics in Aurora, Colorado.</p>
+      <div class="f-socials">
+        <a href="https://www.facebook.com/profile.php?id=61556045236146" class="f-soc">Fb</a>
+        <a href="https://www.instagram.com/theoasisdental/" class="f-soc">Ig</a>
+        <a href="https://www.tiktok.com/@theoasisdental" class="f-soc">Tt</a>
+      </div>
+    </div>
+    <div class="f-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Adult Dentistry</a></li>
+        <li><a href="#">Kids Dentistry</a></li>
+        <li><a href="#">Dental Implants</a></li>
+        <li><a href="#">Orthodontics</a></li>
+        <li><a href="#">Cosmetic Dentistry</a></li>
+        <li><a href="#">Emergency Dentistry</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Practice</h4>
+      <ul>
+        <li><a href="#">Meet the Providers</a></li>
+        <li><a href="#">Meet the Team</a></li>
+        <li><a href="#">Oasis Membership</a></li>
+        <li><a href="#">Insurances Accepted</a></li>
+        <li><a href="#">Current Specials</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Hours</h4>
+      <div>
+        <div class="hour-row"><span>Monday</span><span>8am – 5pm</span></div>
+        <div class="hour-row"><span>Tuesday</span><span>8am – 5pm</span></div>
+        <div class="hour-row"><span>Wednesday</span><span>7am – 8pm</span></div>
+        <div class="hour-row"><span>Thursday</span><span>9am – 6pm</span></div>
+        <div class="hour-row"><span>Friday</span><span>7am – 6pm</span></div>
+        <div class="hour-row"><span>Saturday</span><span>8am – 5pm</span></div>
+        <div class="hour-row"><span>Sunday</span><span>Closed</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Oasis Dental. All rights reserved.</span>
+    <span>990 S Abilene St, Aurora, CO 80012 &nbsp;·&nbsp; <a href="tel:7206802688">(720) 680-2688</a> &nbsp;·&nbsp; <a href="mailto:info@oasisdentalhealth.com">info@oasisdentalhealth.com</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
