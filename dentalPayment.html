@@ -1,0 +1,694 @@
+<style>
+    #dental-calc {
+        --primary-blue: #0CDBFD;
+        --accent-blue: #00bfe0;
+        --light-blue: #E8F2F9;
+        --slider-track: #C9DFEF;
+        --white: #FFFFFF;
+        --text-dark: #111827;
+        --text-gray: #4B5563;
+
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--white);
+        max-width: 100%;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        color: var(--text-dark);
+    }
+
+    #dental-calc .dc-header {
+        background-color: var(--white);
+        padding: 40px 30px 20px;
+        text-align: center;
+        border-bottom: 2px solid var(--light-blue);
+    }
+
+    #dental-calc .dc-header h2 {
+        margin: 0;
+        color: var(--primary-blue);
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    #dental-calc .dc-header p {
+        margin: 10px 0 0 0;
+        color: var(--text-gray);
+        font-size: 16px;
+    }
+
+    #dental-calc .dc-instructions {
+        padding: 25px 40px;
+        background-color: #FAFCFE;
+        border-bottom: 2px solid var(--light-blue);
+        color: var(--text-gray);
+    }
+
+    #dental-calc .dc-instructions h3 {
+        margin: 0 0 12px 0;
+        color: var(--text-dark);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        border-left: 3px solid var(--primary-blue);
+        padding-left: 10px;
+    }
+
+    #dental-calc .dc-instructions ul {
+        margin: 0;
+        padding-left: 18px;
+        line-height: 1.7;
+        font-size: 14px;
+    }
+
+    #dental-calc .dc-instructions li { margin-bottom: 6px; }
+    #dental-calc .dc-instructions strong { color: var(--text-dark); }
+    #dental-calc .dc-instructions .alert-text { color: #d9381e; font-weight: 600; }
+    #dental-calc .dc-instructions .highlight-text { color: var(--accent-blue); font-weight: 700; }
+
+    #dental-calc .dc-body { display: flex; flex-wrap: wrap; }
+
+    #dental-calc .dc-controls {
+        flex: 1 1 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+        padding: 40px 30px;
+        background-color: var(--white);
+    }
+
+    #dental-calc .dc-group { display: flex; flex-direction: column; }
+    #dental-calc .dc-group-noborder { border-bottom: none !important; }
+
+    #dental-calc .dc-group label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    #dental-calc .dc-solid { font-weight: 700; color: var(--text-dark); }
+    #dental-calc .dc-solid-gray { font-weight: 700; color: var(--text-gray); font-size: 12px; }
+
+    #dental-calc .dc-input-wrap {
+        display: flex;
+        align-items: center;
+        background: #FAFCFE;
+        border: 2px solid var(--slider-track);
+        border-radius: 6px;
+        padding: 4px 8px;
+        transition: all 0.2s;
+    }
+
+    #dental-calc .dc-input-wrap:focus-within {
+        border-color: var(--primary-blue);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(12, 219, 253, 0.15);
+    }
+
+    #dental-calc .dc-input-wrap .prefix,
+    #dental-calc .dc-input-wrap .suffix {
+        color: var(--text-gray);
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    #dental-calc .dc-select-wrap {
+        display: flex;
+        align-items: center;
+        background: #FAFCFE;
+        border: 2px solid var(--slider-track);
+        border-radius: 6px;
+        padding: 2px 4px 2px 8px;
+        transition: all 0.2s;
+    }
+
+    #dental-calc .dc-select-wrap:focus-within {
+        border-color: var(--primary-blue);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(12, 219, 253, 0.15);
+    }
+
+    #dental-calc .dc-num {
+        width: 80px;
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark);
+        text-align: right;
+        outline: none;
+        font-family: inherit;
+        padding: 0 4px;
+    }
+
+    #dental-calc .dc-select {
+        border: none;
+        background: var(--light-blue);
+        color: var(--text-dark);
+        font-weight: 700;
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        outline: none;
+        margin-left: 5px;
+        appearance: none;
+        -webkit-appearance: none;
+        text-align: center;
+    }
+
+    #dental-calc input[type=number]::-webkit-inner-spin-button,
+    #dental-calc input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    #dental-calc input[type=number] { -moz-appearance: textfield; }
+
+    #dental-calc .dc-text-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid var(--slider-track);
+        border-radius: 8px;
+        font-size: 15px;
+        color: var(--text-dark);
+        font-family: inherit;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+        background-color: #FAFCFE;
+    }
+
+    #dental-calc .dc-text-input:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        background-color: var(--white);
+        box-shadow: 0 0 0 3px rgba(12, 219, 253, 0.15);
+    }
+
+    #dental-calc input[type="range"] { width: 100%; -webkit-appearance: none; background: transparent; }
+    #dental-calc input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; height: 22px; width: 22px; border-radius: 50%;
+        background: var(--primary-blue); cursor: pointer; margin-top: -9px;
+        border: 3px solid var(--white); box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.1s;
+    }
+    #dental-calc input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); background: var(--accent-blue); }
+    #dental-calc input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%; height: 5px; cursor: pointer; background: var(--slider-track); border-radius: 3px;
+    }
+    #dental-calc input[type="range"]:focus { outline: none; }
+
+    #dental-calc .dc-patient-group {
+        display: none;
+        flex-direction: column;
+        margin-top: -10px;
+        padding-left: 15px;
+        border-left: 3px solid var(--accent-blue);
+        animation: dcFadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes dcFadeIn {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    #dental-calc .dc-results {
+        flex: 1 1 320px;
+        background-color: var(--primary-blue);
+        color: var(--text-dark);
+        padding: 45px 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+    }
+
+    #dental-calc .dc-result-item {
+        display: flex; flex-direction: column; align-items: center;
+        text-align: center; padding-bottom: 24px; border-bottom: 1px solid rgba(0,0,0,0.12);
+    }
+    #dental-calc .dc-result-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    #dental-calc .dc-result-label {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+        margin-bottom: 10px; color: var(--text-dark); opacity: 0.7; font-weight: 700;
+    }
+
+    #dental-calc .dc-result-value { font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--text-dark); }
+    #dental-calc .dc-result-value.big { font-size: 50px; }
+    #dental-calc .dc-result-value.warning { color: #d9381e; }
+
+    #dental-calc .dc-badge {
+        background-color: rgba(255,255,255,0.9); color: var(--text-dark);
+        padding: 5px 12px; border-radius: 20px; font-size: 11px; margin-top: 10px;
+        display: none; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; text-align: center;
+    }
+
+    #dental-calc .dc-disclaimer {
+        font-size: 11px; text-align: center; opacity: 0.7; color: var(--text-dark);
+        margin-top: auto; padding-top: 8px; line-height: 1.5; font-weight: 500;
+    }
+
+    #dental-calc .dc-buttons { display: flex; gap: 12px; margin-top: 12px; width: 100%; }
+
+    #dental-calc .dc-btn {
+        flex: 1; padding: 11px 10px; border-radius: 7px; font-size: 12px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s ease;
+        text-align: center; background-color: rgba(255,255,255,0.9);
+        border: 2px solid rgba(255,255,255,0.9); color: var(--text-dark);
+    }
+    #dental-calc .dc-btn:hover { background-color: var(--text-dark); color: var(--white); border-color: var(--text-dark); }
+
+    @media (max-width: 800px) {
+        #dental-calc .dc-body { flex-direction: column; }
+        #dental-calc .dc-results { padding: 35px 20px; }
+        #dental-calc .dc-buttons { flex-direction: column; gap: 10px; }
+        #dental-calc .dc-instructions { padding: 20px; }
+        #dental-calc .dc-controls { padding: 30px 20px; }
+    }
+</style>
+
+<div id="dental-calc">
+    <div class="dc-header">
+        <h2>Dental Payment Plan Calculator</h2>
+        <p>Review the treatment plan and explore flexible payment options.</p>
+    </div>
+
+    <div class="dc-instructions">
+        <h3>Quick Guide for Office Staff</h3>
+        <ul>
+            <li><strong>Proposed Treatment:</strong> Type the exact procedure(s) into the text box.</li>
+            <li><strong>Values & Sliders:</strong> You can type exact numbers into the boxes or drag the sliders.</li>
+            <li><strong>Additional Discounts:</strong> Use the dropdown to apply a flat amount (<code>$</code>) or a percentage (<code>%</code>) as a manual courtesy before calculation.</li>
+            <li><strong>Insurance & <span class="highlight-text">Patient Portion:</span></strong> Entering any insurance will automatically reveal the <strong>Patient Portion</strong> slider. These two are linked — adjusting one will automatically recalculate the other.</li>
+            <li><strong>Pay-In-Full Rule:</strong> <span class="alert-text">If estimated insurance is applied, the 10% Pay-In-Full discount is automatically removed.</span></li>
+            <li><strong>Payment Schedule:</strong> Use the dropdown next to the term length to switch between <strong>Months</strong>, <strong>Bi-Weekly</strong>, or <strong>Per Visit</strong> payments.</li>
+            <li><strong>Interest:</strong> The "Total Interest Paid" line stays hidden unless the Interest Rate is set above 0%.</li>
+            <li><strong>Printing vs Saving:</strong> <strong>Print Estimate</strong> gives a clean copy to the patient (instructions hidden). <strong>Save as PDF</strong> saves the full view for records.</li>
+        </ul>
+    </div>
+
+    <div class="dc-body">
+        <div class="dc-controls">
+
+            <div class="dc-group dc-group-noborder">
+                <label><span class="dc-solid">Proposed Treatment</span></label>
+                <input type="text" id="dc-treatment" class="dc-text-input" placeholder="e.g., 2 Crowns and Deep Cleaning">
+            </div>
+
+            <div class="dc-group">
+                <label>
+                    <span class="dc-solid">Total Treatment Cost</span>
+                    <div class="dc-input-wrap">
+                        <span class="prefix">$</span>
+                        <input type="number" id="dc-num-cost" class="dc-num" min="0" step="0.01" value="0">
+                    </div>
+                </label>
+                <input type="range" id="dc-range-cost" min="0" max="30000" step="50" value="0">
+            </div>
+
+            <div class="dc-group" style="margin-bottom:-10px;">
+                <label>
+                    <span class="dc-solid-gray">Additional Discount</span>
+                    <div class="dc-select-wrap">
+                        <input type="number" id="dc-num-discount" class="dc-num" min="0" step="0.01" value="0">
+                        <select id="dc-select-discount" class="dc-select">
+                            <option value="$">$</option>
+                            <option value="%">%</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
+
+            <div class="dc-group">
+                <label>
+                    <span class="dc-solid">Estimated Insurance Coverage</span>
+                    <div class="dc-input-wrap">
+                        <span class="prefix">$</span>
+                        <input type="number" id="dc-num-ins" class="dc-num" min="0" step="0.01" value="0">
+                    </div>
+                </label>
+                <input type="range" id="dc-range-ins" min="0" max="10000" step="50" value="0">
+            </div>
+
+            <div class="dc-patient-group" id="dc-patient-group">
+                <label>
+                    <span class="dc-solid" style="color:var(--accent-blue);">Patient Portion (Out-of-Pocket)</span>
+                    <div class="dc-input-wrap" style="border-color:var(--accent-blue);">
+                        <span class="prefix" style="color:var(--accent-blue);">$</span>
+                        <input type="number" id="dc-num-patient" class="dc-num" min="0" step="0.01" value="0">
+                    </div>
+                </label>
+                <input type="range" id="dc-range-patient" min="0" max="10000" step="50" value="0">
+            </div>
+
+            <div class="dc-group">
+                <label>
+                    <span class="dc-solid">Initial Deposit / Down Payment</span>
+                    <div class="dc-input-wrap">
+                        <span class="prefix">$</span>
+                        <input type="number" id="dc-num-down" class="dc-num" min="0" step="0.01" value="0">
+                    </div>
+                </label>
+                <input type="range" id="dc-range-down" min="0" max="30000" step="50" value="0">
+            </div>
+
+            <div class="dc-group">
+                <label>
+                    <span class="dc-solid">Term / Payment Schedule</span>
+                    <div class="dc-select-wrap">
+                        <input type="number" id="dc-num-term" class="dc-num" min="0" max="60" step="1" value="0" style="text-align:center;">
+                        <select id="dc-select-term" class="dc-select">
+                            <option value="months">Months</option>
+                            <option value="biweekly">Bi-Weekly</option>
+                            <option value="pervisit">Per Visit</option>
+                        </select>
+                    </div>
+                </label>
+                <input type="range" id="dc-range-term" min="0" max="60" step="1" value="0">
+            </div>
+
+            <div class="dc-group">
+                <label>
+                    <span class="dc-solid">Interest Rate (APR)</span>
+                    <div class="dc-input-wrap">
+                        <input type="number" id="dc-num-interest" class="dc-num" min="0" max="30" step="0.1" value="0" style="text-align:center;">
+                        <span class="suffix">%</span>
+                    </div>
+                </label>
+                <input type="range" id="dc-range-interest" min="0" max="30" step="1" value="0">
+            </div>
+
+        </div>
+
+        <div class="dc-results">
+            <div class="dc-result-item">
+                <div class="dc-result-label" id="dc-payment-label">Estimated Monthly Payment</div>
+                <div class="dc-result-value big" id="dc-res-payment">$0.00</div>
+            </div>
+            <div class="dc-result-item">
+                <div class="dc-result-label">Total Amount Financed</div>
+                <div class="dc-result-value" id="dc-res-total">$0.00</div>
+            </div>
+            <div class="dc-result-item" id="dc-interest-container" style="display:none;">
+                <div class="dc-result-label">Total Interest Paid</div>
+                <div class="dc-result-value warning" id="dc-res-interest">$0.00</div>
+            </div>
+            <div class="dc-result-item">
+                <div class="dc-result-label">Pay in Full Amount *</div>
+                <div class="dc-result-value" id="dc-res-payinfull">$0.00</div>
+                <div class="dc-badge" id="dc-badge">Includes 10% Discount</div>
+            </div>
+            <div class="dc-disclaimer">* If insurance is utilized, the 10% pay in full discount cannot be applied.</div>
+            <div class="dc-buttons">
+                <button class="dc-btn" onclick="dcPrintEstimate()">Print Estimate</button>
+                <button class="dc-btn" onclick="dcSavePDF()">Save as PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const numCost       = document.getElementById('dc-num-cost');
+    const rangeCost     = document.getElementById('dc-range-cost');
+    const numDiscount   = document.getElementById('dc-num-discount');
+    const selDiscount   = document.getElementById('dc-select-discount');
+    const numIns        = document.getElementById('dc-num-ins');
+    const rangeIns      = document.getElementById('dc-range-ins');
+    const numPatient    = document.getElementById('dc-num-patient');
+    const rangePatient  = document.getElementById('dc-range-patient');
+    const patientGroup  = document.getElementById('dc-patient-group');
+    const numDown       = document.getElementById('dc-num-down');
+    const rangeDown     = document.getElementById('dc-range-down');
+    const numTerm       = document.getElementById('dc-num-term');
+    const rangeTerm     = document.getElementById('dc-range-term');
+    const selTerm       = document.getElementById('dc-select-term');
+    const numInterest   = document.getElementById('dc-num-interest');
+    const rangeInterest = document.getElementById('dc-range-interest');
+
+    const payLabel         = document.getElementById('dc-payment-label');
+    const resPayment       = document.getElementById('dc-res-payment');
+    const resTotal         = document.getElementById('dc-res-total');
+    const resInterest      = document.getElementById('dc-res-interest');
+    const interestBox      = document.getElementById('dc-interest-container');
+    const resPayInFull     = document.getElementById('dc-res-payinfull');
+    const badge            = document.getElementById('dc-badge');
+
+    const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
+
+    let lastSource = '';
+    let draggingPatient = false;
+
+    rangePatient.addEventListener('mousedown', () => draggingPatient = true);
+    window.addEventListener('mouseup', () => {
+        if (draggingPatient) { draggingPatient = false; dcCalc(); }
+    });
+
+    selTerm.addEventListener('change', () => {
+        rangeTerm.max = selTerm.value === 'biweekly' ? 130 : 60;
+        dcCalc();
+    });
+
+    function dcCalc() {
+        let rawCost = parseFloat(numCost.value) || 0;
+        let discVal = parseFloat(numDiscount.value) || 0;
+        let isPct   = selDiscount.value === '%';
+        let discAmt = isPct ? rawCost * (discVal / 100) : discVal;
+        let cost    = Math.max(0, rawCost - discAmt);
+
+        let insurance    = parseFloat(numIns.value) || 0;
+        let patient      = parseFloat(numPatient.value) || 0;
+        let down         = parseFloat(numDown.value) || 0;
+        let rate         = parseFloat(numInterest.value) || 0;
+        let rawTerm      = parseFloat(numTerm.value) || 0;
+        let numPeriods   = Math.max(1, rawTerm);
+
+        if (lastSource === 'insurance') {
+            if (insurance > cost) insurance = cost;
+            patient = cost - insurance;
+            numPatient.value = patient.toFixed(2);
+            rangePatient.value = patient;
+        } else if (lastSource === 'patient') {
+            if (patient > cost) patient = cost;
+            insurance = cost - patient;
+            numIns.value = insurance.toFixed(2);
+            rangeIns.value = insurance;
+        } else {
+            if (insurance > cost) insurance = cost;
+            patient = cost - insurance;
+            numIns.value = insurance.toFixed(2);
+            rangeIns.value = insurance;
+            numPatient.value = patient.toFixed(2);
+            rangePatient.value = patient;
+        }
+
+        let maxLimit = Math.ceil(cost) > 0 ? Math.ceil(cost) : 10000;
+        rangeIns.max = maxLimit;
+        rangePatient.max = maxLimit;
+
+        patientGroup.style.display = (insurance > 0 || draggingPatient) ? 'flex' : 'none';
+
+        if (down > patient) { down = patient; numDown.value = down.toFixed(2); rangeDown.value = down; }
+        rangeDown.max = Math.ceil(patient) > 0 ? Math.ceil(patient) : 30000;
+
+        let periodsPerYear = selTerm.value === 'biweekly' ? 26 : 12;
+        let principal = Math.max(0, patient - down);
+        let payment = 0;
+        let totalInterest = 0;
+
+        if (principal > 0 && rawTerm > 0) {
+            if (rate === 0) {
+                payment = principal / numPeriods;
+            } else {
+                let pr = (rate / 100) / periodsPerYear;
+                payment = principal * (pr * Math.pow(1 + pr, numPeriods)) / (Math.pow(1 + pr, numPeriods) - 1);
+                totalInterest = (payment * numPeriods) - principal;
+            }
+        }
+
+        if (selTerm.value === 'months') payLabel.innerText = 'Estimated Monthly Payment';
+        else if (selTerm.value === 'biweekly') payLabel.innerText = 'Estimated Bi-Weekly Payment';
+        else payLabel.innerText = 'Estimated Payment Per Visit';
+
+        if (totalInterest > 0) {
+            interestBox.style.display = 'flex';
+            resInterest.innerText = fmt(totalInterest);
+        } else {
+            interestBox.style.display = 'none';
+        }
+
+        let payInFull = 0;
+        if (insurance > 0) {
+            payInFull = patient;
+            badge.style.display = 'none';
+        } else {
+            payInFull = cost * 0.90;
+            if (cost > 0) {
+                badge.style.display = 'inline-block';
+                if (discAmt > 0) {
+                    badge.innerText = isPct
+                        ? `Includes 10% PIF + ${discVal}% Extra Discount`
+                        : `Includes 10% PIF + $${discVal} Extra Discount`;
+                } else {
+                    badge.innerText = 'Includes 10% Discount';
+                }
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        resTotal.innerText    = fmt(principal);
+        resPayment.innerText  = fmt(payment);
+        resPayInFull.innerText = fmt(payInFull);
+    }
+
+    function setupSync(numEl, rangeEl, src) {
+        numEl.addEventListener('input', () => {
+            if (src) lastSource = src;
+            if (parseFloat(numEl.value) > parseFloat(rangeEl.max)) rangeEl.max = numEl.value;
+            rangeEl.value = numEl.value;
+            dcCalc();
+        });
+        rangeEl.addEventListener('input', () => {
+            if (src) lastSource = src;
+            numEl.value = rangeEl.value;
+            dcCalc();
+        });
+    }
+
+    setupSync(numCost, rangeCost, 'cost');
+    setupSync(numIns, rangeIns, 'insurance');
+    setupSync(numPatient, rangePatient, 'patient');
+    setupSync(numDown, rangeDown, 'downpayment');
+    setupSync(numTerm, rangeTerm, 'term');
+    setupSync(numInterest, rangeInterest, 'interest');
+
+    numDiscount.addEventListener('input', () => { lastSource = 'discount'; dcCalc(); });
+    selDiscount.addEventListener('change', () => { lastSource = 'discount'; dcCalc(); });
+
+    dcCalc();
+
+    // Build a clean isolated print page
+    function buildPrintHTML(includeInstructions) {
+        const treatment  = document.getElementById('dc-treatment').value || '—';
+        const termType   = selTerm.options[selTerm.selectedIndex].text;
+        const discType   = selDiscount.value;
+        const discVal    = numDiscount.value;
+        const showBadge  = badge.style.display !== 'none';
+        const badgeText  = badge.innerText;
+        const showInt    = interestBox.style.display !== 'none';
+
+        const instructionsHTML = includeInstructions ? `
+        <div class="section">
+            <div class="section-title">Quick Guide for Office Staff</div>
+            <ul style="font-size:12px;color:#4B5563;padding-left:16px;line-height:1.7;margin:0;">
+                <li><strong>Proposed Treatment:</strong> Type the exact procedure(s) into the text box.</li>
+                <li><strong>Insurance & Patient Portion:</strong> These are linked — adjusting one recalculates the other.</li>
+                <li><strong>Pay-In-Full Rule:</strong> If insurance is applied, the 10% discount is removed.</li>
+                <li><strong>Print Estimate</strong> gives a clean patient copy. <strong>Save as PDF</strong> saves the full view.</li>
+            </ul>
+        </div>` : '';
+
+        return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dental Payment Plan${includeInstructions ? ' — Full Record' : ' — Patient Estimate'}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#fff; color:#111827; padding:36px; }
+  .print-header { text-align:center; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #E8F2F9; }
+  .print-header h1 { font-size:22px; color:#0CDBFD; font-weight:700; margin-bottom:6px; }
+  .print-header p { font-size:13px; color:#4B5563; }
+  .print-body { display:flex; gap:24px; align-items:flex-start; }
+  .left-col { flex:1; display:flex; flex-direction:column; gap:16px; }
+  .section { background:#FAFCFE; border:1px solid #E8F2F9; border-radius:8px; padding:14px 16px; }
+  .section-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:#111827; border-left:3px solid #0CDBFD; padding-left:8px; margin-bottom:10px; }
+  .row { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid #E8EAEC; font-size:13px; }
+  .row:last-child { border-bottom:none; }
+  .lbl { color:#4B5563; }
+  .val { font-weight:700; color:#111827; }
+  .treatment-box { background:#fff; border:1px solid #C9DFEF; border-radius:6px; padding:10px 14px; font-size:14px; font-weight:600; color:#111827; }
+  .right-col { width:220px; background:#0CDBFD; border-radius:10px; padding:24px 16px; display:flex; flex-direction:column; gap:16px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .res-item { text-align:center; padding-bottom:14px; border-bottom:1px solid rgba(0,0,0,0.1); }
+  .res-item:last-child { border-bottom:none; padding-bottom:0; }
+  .res-label { font-size:10px; text-transform:uppercase; letter-spacing:2px; font-weight:700; opacity:0.7; margin-bottom:6px; }
+  .res-value { font-size:26px; font-weight:700; }
+  .res-value.big { font-size:34px; }
+  .res-value.warn { color:#d9381e; }
+  .dc-badge { background:rgba(255,255,255,0.9); padding:4px 10px; border-radius:20px; font-size:10px; font-weight:700; text-transform:uppercase; display:inline-block; margin-top:8px; }
+  .res-disc { font-size:10px; opacity:0.7; text-align:center; margin-top:6px; line-height:1.5; }
+  .footer { margin-top:24px; padding-top:12px; border-top:1px solid #E8EAEC; font-size:11px; color:#4B5563; text-align:center; }
+</style>
+</head>
+<body>
+  <div class="print-header">
+    <h1>Dental Payment Plan${includeInstructions ? ' — Office Record' : ' — Patient Estimate'}</h1>
+    <p>This estimate is for informational purposes only and is subject to change.</p>
+  </div>
+  <div class="print-body">
+    <div class="left-col">
+      ${instructionsHTML}
+      <div class="section">
+        <div class="section-title">Proposed Treatment</div>
+        <div class="treatment-box">${treatment}</div>
+      </div>
+      <div class="section">
+        <div class="section-title">Treatment Details</div>
+        <div class="row"><span class="lbl">Total Treatment Cost</span><span class="val">$${numCost.value}</span></div>
+        ${parseFloat(numDiscount.value) > 0 ? `<div class="row"><span class="lbl">Additional Discount</span><span class="val">${discVal}${discType}</span></div>` : ''}
+        ${parseFloat(numIns.value) > 0 ? `<div class="row"><span class="lbl">Estimated Insurance</span><span class="val">$${numIns.value}</span></div>` : ''}
+        ${parseFloat(numIns.value) > 0 ? `<div class="row"><span class="lbl">Patient Portion</span><span class="val">$${numPatient.value}</span></div>` : ''}
+        <div class="row"><span class="lbl">Initial Deposit</span><span class="val">$${numDown.value}</span></div>
+        <div class="row"><span class="lbl">Term</span><span class="val">${numTerm.value} ${termType}</span></div>
+        <div class="row"><span class="lbl">Interest Rate</span><span class="val">${numInterest.value}%</span></div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="res-item">
+        <div class="res-label">${payLabel.innerText}</div>
+        <div class="res-value big">${resPayment.innerText}</div>
+      </div>
+      <div class="res-item">
+        <div class="res-label">Total Financed</div>
+        <div class="res-value">${resTotal.innerText}</div>
+      </div>
+      ${showInt ? `<div class="res-item"><div class="res-label">Total Interest Paid</div><div class="res-value warn">${resInterest.innerText}</div></div>` : ''}
+      <div class="res-item">
+        <div class="res-label">Pay in Full *</div>
+        <div class="res-value">${resPayInFull.innerText}</div>
+        ${showBadge ? `<span class="dc-badge">${badgeText}</span>` : ''}
+      </div>
+      <div class="res-disc">* If insurance is utilized, the 10% pay in full discount cannot be applied.</div>
+    </div>
+  </div>
+  <div class="footer">Oasis Dental &mdash; Adults, Kids &amp; Braces &mdash; (719) 781-6932 &mdash; 990 S Abilene St, Aurora, CO 80012</div>
+</body>
+</html>`;
+    }
+
+    window.dcPrintEstimate = function() {
+        const win = window.open('', '_blank', 'width=820,height=700');
+        win.document.write(buildPrintHTML(false));
+        win.document.close();
+        win.focus();
+        win.onload = function() { win.print(); };
+    };
+
+    window.dcSavePDF = function() {
+        const win = window.open('', '_blank', 'width=820,height=700');
+        win.document.write(buildPrintHTML(true));
+        win.document.close();
+        win.focus();
+        win.onload = function() { win.print(); };
+    };
+
+})();
+</script>

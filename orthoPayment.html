@@ -1,0 +1,625 @@
+<style>
+    #ortho-dashboard {
+        --primary-blue: #0CDBFD;
+        --accent-blue: #00bfe0;
+        --light-blue: #E8F2F9;
+        --slider-track: #C9DFEF;
+        --white: #FFFFFF;
+        --text-dark: #111827;
+        --text-gray: #4B5563;
+
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--white);
+        max-width: 100%;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        color: var(--text-dark);
+    }
+
+    #ortho-dashboard .header {
+        background-color: var(--white);
+        padding: 40px 30px 20px;
+        text-align: center;
+        border-bottom: 2px solid var(--light-blue);
+    }
+
+    #ortho-dashboard .header h2 {
+        margin: 0;
+        color: var(--primary-blue);
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    #ortho-dashboard .header p {
+        margin: 10px 0 0 0;
+        color: var(--text-gray);
+        font-size: 16px;
+    }
+
+    #ortho-dashboard .checklist-section {
+        padding: 30px 40px;
+        background-color: #FAFCFE;
+        border-bottom: 2px solid var(--light-blue);
+    }
+
+    #ortho-dashboard .checklist-group { margin-bottom: 25px; }
+    #ortho-dashboard .checklist-group:last-child { margin-bottom: 0; }
+
+    #ortho-dashboard .checklist-group h3 {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 0 0 14px 0;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: var(--text-dark);
+        border-left: 3px solid var(--primary-blue);
+        padding-left: 10px;
+    }
+
+    #ortho-dashboard .checklist-group h3 .sub-text {
+        text-transform: none;
+        font-size: 0.80em;
+        font-weight: 500;
+        color: var(--text-gray);
+        letter-spacing: 0;
+        display: block;
+        margin-top: 3px;
+    }
+
+    #ortho-dashboard .checklist-items { display: flex; flex-direction: column; gap: 8px; }
+
+    #ortho-dashboard .check-container {
+        display: flex;
+        align-items: flex-start;
+        position: relative;
+        padding: 8px 10px 8px 32px;
+        margin-left: -12px;
+        cursor: pointer;
+        font-size: 15px;
+        color: var(--text-dark);
+        font-weight: 500;
+        user-select: none;
+        transition: all 0.3s ease;
+        line-height: 1.4;
+        border-radius: 6px;
+    }
+
+    #ortho-dashboard .check-container:hover { color: var(--accent-blue); }
+    #ortho-dashboard .check-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+
+    #ortho-dashboard .checkmark {
+        position: absolute;
+        top: 8px;
+        left: 0;
+        height: 22px;
+        width: 22px;
+        background-color: var(--white);
+        border: 2px solid var(--slider-track);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    #ortho-dashboard .check-container:hover input ~ .checkmark { border-color: var(--primary-blue); }
+    #ortho-dashboard .check-container input:checked ~ .checkmark { background-color: var(--primary-blue); border-color: var(--primary-blue); }
+    #ortho-dashboard .checkmark:after { content: ""; position: absolute; display: none; }
+    #ortho-dashboard .check-container input:checked ~ .checkmark:after {
+        display: block; left: 7px; top: 3px; width: 5px; height: 10px;
+        border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg);
+    }
+    #ortho-dashboard .cross-out input:checked ~ span:last-child { color: var(--text-gray); text-decoration: line-through; }
+
+    #ortho-dashboard .action-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        background-color: var(--white);
+        border: 1px solid var(--slider-track);
+        border-radius: 8px;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+    }
+
+    #ortho-dashboard .action-row:hover { border-color: var(--primary-blue); box-shadow: 0 2px 8px rgba(12, 219, 253, 0.1); }
+    #ortho-dashboard .action-row:has(input[value="yes"]:checked) { background-color: var(--light-blue); border-color: var(--primary-blue); }
+    #ortho-dashboard .action-row:has(input[value="yes"]:checked) .action-text { font-weight: 700; color: var(--text-dark); }
+
+    #ortho-dashboard .action-text { font-size: 15px; color: var(--text-dark); font-weight: 500; flex: 1; padding-right: 20px; line-height: 1.4; }
+    #ortho-dashboard .sub-bullet { display: block; font-size: 0.85em; color: var(--text-gray); margin-top: 2px; font-weight: 500; }
+
+    /* Centered Yes/No toggle group */
+    #ortho-dashboard .toggle-group {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        min-width: 100px;
+    }
+
+    #ortho-dashboard .yn-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-gray);
+        user-select: none;
+        transition: color 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+    }
+    #ortho-dashboard .yn-container:hover { color: var(--primary-blue); }
+    #ortho-dashboard .yn-container input { position: absolute; opacity: 0; cursor: pointer; width: 0; height: 0; }
+
+    #ortho-dashboard .yn-checkmark {
+        display: block;
+        height: 22px;
+        width: 22px;
+        min-height: 22px;
+        min-width: 22px;
+        background-color: var(--white);
+        border: 2px solid var(--slider-track);
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        position: relative;
+        margin: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    #ortho-dashboard .yn-container:hover .yn-checkmark { border-color: var(--primary-blue); }
+    #ortho-dashboard .yn-container input:checked ~ .yn-checkmark { background-color: var(--primary-blue); border-color: var(--primary-blue); }
+    #ortho-dashboard .yn-checkmark:after { content: ""; position: absolute; display: none; }
+    #ortho-dashboard .yn-container input:checked ~ .yn-checkmark:after {
+        display: block; left: 6px; top: 2px; width: 4px; height: 9px;
+        border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg);
+    }
+    #ortho-dashboard .yn-container input:checked ~ span:last-child { color: var(--text-dark); }
+    #ortho-dashboard .yn-container > span:last-child { margin: 0; padding: 0; line-height: 1; display: block; }
+
+    #ortho-dashboard .calc-body { display: flex; flex-wrap: wrap; }
+
+    #ortho-dashboard .controls {
+        flex: 1 1 400px; display: flex; flex-direction: column; gap: 26px;
+        padding: 40px 30px; background-color: var(--white);
+    }
+
+    #ortho-dashboard .control-group { display: flex; flex-direction: column; }
+
+    #ortho-dashboard .control-group label {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 12px; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 0.8px; font-weight: 700; color: var(--text-dark);
+    }
+
+    #ortho-dashboard .control-group span.value {
+        color: var(--accent-blue); font-weight: 700; font-size: 16px;
+        margin-left: 10px; text-transform: none; letter-spacing: 0;
+    }
+
+    #ortho-dashboard .type-selector { display: flex; gap: 12px; margin-top: 5px; }
+
+    #ortho-dashboard .type-btn {
+        flex: 1; padding: 11px; text-align: center; background-color: var(--light-blue);
+        color: var(--text-dark); border: 2px solid var(--light-blue); border-radius: 6px;
+        cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s ease;
+    }
+    #ortho-dashboard .type-btn:hover { border-color: var(--primary-blue); }
+    #ortho-dashboard .type-btn.active { background-color: var(--primary-blue); color: var(--text-dark); border-color: var(--primary-blue); }
+
+    #ortho-dashboard input[type="range"] { width: 100%; -webkit-appearance: none; background: transparent; }
+    #ortho-dashboard input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; height: 22px; width: 22px; border-radius: 50%;
+        background: var(--primary-blue); cursor: pointer; margin-top: -9px;
+        border: 3px solid var(--white); box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: transform 0.1s;
+    }
+    #ortho-dashboard input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); background: var(--accent-blue); }
+    #ortho-dashboard input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%; height: 5px; cursor: pointer; background: var(--slider-track); border-radius: 3px;
+    }
+    #ortho-dashboard input[type="range"]:focus { outline: none; }
+
+    #ortho-dashboard .results {
+        flex: 1 1 320px; background-color: var(--primary-blue); color: var(--text-dark);
+        padding: 45px 35px; display: flex; flex-direction: column; justify-content: center; gap: 28px;
+    }
+
+    #ortho-dashboard .result-item {
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        padding-bottom: 24px; border-bottom: 1px solid rgba(0,0,0,0.12);
+    }
+    #ortho-dashboard .result-item:last-child { border-bottom: none; padding-bottom: 0; }
+    #ortho-dashboard .result-label {
+        font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
+        color: var(--text-dark); opacity: 0.7; font-weight: 700;
+    }
+    #ortho-dashboard .result-value { font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--text-dark); }
+    #ortho-dashboard .result-value.monthly { font-size: 52px; }
+
+    #ortho-dashboard .discount-badge {
+        background-color: rgba(255,255,255,0.9); color: var(--text-dark); padding: 5px 12px;
+        border-radius: 20px; font-size: 11px; margin-top: 10px; display: inline-block;
+        font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+    }
+
+    #ortho-dashboard .disclaimer {
+        font-size: 11px; text-align: center; opacity: 0.7; color: var(--text-dark);
+        margin-top: auto; padding-top: 8px; line-height: 1.5; font-weight: 500;
+    }
+
+    #ortho-dashboard .action-buttons { display: flex; gap: 12px; margin-top: 12px; width: 100%; }
+
+    #ortho-dashboard .btn {
+        flex: 1; padding: 11px 10px; border-radius: 7px; font-size: 12px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s ease;
+        text-align: center; background-color: rgba(255,255,255,0.9);
+        border: 2px solid rgba(255,255,255,0.9); color: var(--text-dark);
+    }
+    #ortho-dashboard .btn:hover { background-color: var(--text-dark); color: var(--white); border-color: var(--text-dark); }
+
+    @media (max-width: 800px) {
+        #ortho-dashboard .calc-body { flex-direction: column; }
+        #ortho-dashboard .results { padding: 35px 20px; }
+        #ortho-dashboard .action-buttons { flex-direction: column; gap: 10px; }
+        #ortho-dashboard .checklist-section { padding: 25px 20px; }
+        #ortho-dashboard .controls { padding: 30px 20px; }
+        #ortho-dashboard .action-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+        #ortho-dashboard .action-text { padding-right: 0; }
+    }
+</style>
+
+<div id="ortho-dashboard">
+    <div class="header">
+        <h2>Orthodontic Consultation Dashboard</h2>
+        <p>Review the treatment plan and find a flexible payment option.</p>
+    </div>
+
+    <div class="checklist-section">
+        <div class="checklist-group">
+            <h3>Step 1 — Repeating Orthodontic Treatment Plan</h3>
+            <div class="checklist-items">
+                <label class="check-container cross-out">
+                    <input type="checkbox"><span class="checkmark"></span>
+                    <span><strong>Length of treatment plan</strong> — Discuss the length of the treatment plan with the patient</span>
+                </label>
+                <label class="check-container cross-out">
+                    <input type="checkbox"><span class="checkmark"></span>
+                    <span><strong>Benefits</strong> — Repeat the benefits of braces to the patient</span>
+                </label>
+                <label class="check-container cross-out">
+                    <input type="checkbox"><span class="checkmark"></span>
+                    <span><strong>Additional information</strong> — Repeat any additional information the orthodontist stated in the visit to the patient</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="checklist-group">
+            <h3>Step 2 — Finances
+                <span class="sub-text">If the patient said yes to braces, which option did they choose? If not, move to Step 3.</span>
+            </h3>
+            <div class="checklist-items">
+                <div class="action-row">
+                    <div class="action-text">Pay in full — 10% off discount</div>
+                    <div class="toggle-group">
+                        <label class="yn-container"><input type="radio" name="ortho-finance1" value="yes"><span class="yn-checkmark"></span><span>Yes</span></label>
+                        <label class="yn-container"><input type="radio" name="ortho-finance1" value="no"><span class="yn-checkmark"></span><span>No</span></label>
+                    </div>
+                </div>
+                <div class="action-row">
+                    <div class="action-text">Payment plan (matching length of orthodontic treatment)</div>
+                    <div class="toggle-group">
+                        <label class="yn-container"><input type="radio" name="ortho-finance2" value="yes"><span class="yn-checkmark"></span><span>Yes</span></label>
+                        <label class="yn-container"><input type="radio" name="ortho-finance2" value="no"><span class="yn-checkmark"></span><span>No</span></label>
+                    </div>
+                </div>
+                <div class="action-row">
+                    <div class="action-text">
+                        Payment plan beyond the treatment length
+                        <span class="sub-bullet">Only offer this as a last option — max 6 months after</span>
+                    </div>
+                    <div class="toggle-group">
+                        <label class="yn-container"><input type="radio" name="ortho-finance3" value="yes"><span class="yn-checkmark"></span><span>Yes</span></label>
+                        <label class="yn-container"><input type="radio" name="ortho-finance3" value="no"><span class="yn-checkmark"></span><span>No</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-group">
+            <h3>Step 3 — No to Orthodontic Treatment
+                <span class="sub-text">If the patient says no to starting braces.</span>
+            </h3>
+            <div class="checklist-items">
+                <div class="action-row">
+                    <div class="action-text">Will the patient be added to the orthodontic Excel sheet?</div>
+                    <div class="toggle-group">
+                        <label class="yn-container"><input type="radio" name="ortho-excel" value="yes"><span class="yn-checkmark"></span><span>Yes</span></label>
+                        <label class="yn-container"><input type="radio" name="ortho-excel" value="no"><span class="yn-checkmark"></span><span>No</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="calc-body">
+        <div class="controls">
+            <div class="control-group">
+                <label>Treatment Type</label>
+                <div class="type-selector">
+                    <div class="type-btn active" onclick="orthoSetType('braces', this)">Braces</div>
+                    <div class="type-btn" onclick="orthoSetType('clear-aligners', this)">Clear Aligners</div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label>Treatment Cost <span class="value" id="ortho-val-cost">$5,500</span></label>
+                <input type="range" id="ortho-cost" min="1000" max="10000" step="10" value="5500">
+            </div>
+            <div class="control-group">
+                <label>Initial Payment <span class="value" id="ortho-val-down">$500</span></label>
+                <input type="range" id="ortho-downpayment" min="0" max="10000" step="10" value="500">
+            </div>
+            <div class="control-group">
+                <label>Estimated Insurance <span class="value" id="ortho-val-insurance">$0</span></label>
+                <input type="range" id="ortho-insurance" min="0" max="10000" step="10" value="0">
+            </div>
+            <div class="control-group">
+                <label>Term Length <span class="value" id="ortho-val-months">22 months</span></label>
+                <input type="range" id="ortho-months" min="1" max="48" step="1" value="22">
+            </div>
+            <div class="control-group">
+                <label>Interest Rate <span class="value" id="ortho-val-interest">0%</span></label>
+                <input type="range" id="ortho-interest" min="0" max="20" step="1" value="0">
+            </div>
+        </div>
+
+        <div class="results">
+            <div class="result-item">
+                <div class="result-label">Estimated Monthly Payment</div>
+                <div class="result-value monthly" id="ortho-res-monthly">$227</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">Total Amount Financed</div>
+                <div class="result-value" id="ortho-res-total">$5,000</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">Pay in Full Amount *</div>
+                <div class="result-value" id="ortho-res-payinfull">$4,950</div>
+                <div class="discount-badge" id="ortho-discount-badge">Includes 10% Discount</div>
+            </div>
+            <div class="disclaimer">* If insurance is utilized, the pay in full discount cannot be applied.</div>
+            <div class="action-buttons">
+                <button class="btn" onclick="orthoPrintEstimate()">Print Estimate</button>
+                <button class="btn" onclick="orthoPrintFull()">Save Page</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const inputCost     = document.getElementById('ortho-cost');
+    const inputDown     = document.getElementById('ortho-downpayment');
+    const inputIns      = document.getElementById('ortho-insurance');
+    const inputMonths   = document.getElementById('ortho-months');
+    const inputInterest = document.getElementById('ortho-interest');
+
+    const valCost     = document.getElementById('ortho-val-cost');
+    const valDown     = document.getElementById('ortho-val-down');
+    const valIns      = document.getElementById('ortho-val-insurance');
+    const valMonths   = document.getElementById('ortho-val-months');
+    const valInterest = document.getElementById('ortho-val-interest');
+
+    const resMonthly    = document.getElementById('ortho-res-monthly');
+    const resTotal      = document.getElementById('ortho-res-total');
+    const resPayInFull  = document.getElementById('ortho-res-payinfull');
+    const discountBadge = document.getElementById('ortho-discount-badge');
+
+    const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+
+    window.orthoSetType = function(type, el) {
+        document.querySelectorAll('#ortho-dashboard .type-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        orthoCalc();
+    };
+
+    function orthoCalc() {
+        let cost      = parseFloat(inputCost.value);
+        inputDown.max = cost;
+        inputIns.max  = cost;
+
+        let down      = parseFloat(inputDown.value);
+        let insurance = parseFloat(inputIns.value);
+        let months    = parseFloat(inputMonths.value);
+        let rate      = parseFloat(inputInterest.value);
+
+        if (insurance > cost) { insurance = cost; inputIns.value = insurance; }
+        if ((down + insurance) > cost) { down = Math.max(0, cost - insurance); inputDown.value = down; }
+
+        valCost.innerText     = fmt(cost);
+        valDown.innerText     = fmt(down);
+        valIns.innerText      = fmt(insurance);
+        valMonths.innerText   = months + (months === 1 ? ' month' : ' months');
+        valInterest.innerText = rate + '%';
+
+        let principal = Math.max(0, cost - down - insurance);
+        let monthly = 0;
+
+        if (principal > 0) {
+            if (rate === 0) {
+                monthly = principal / months;
+            } else {
+                let mr = (rate / 100) / 12;
+                monthly = principal * (mr * Math.pow(1 + mr, months)) / (Math.pow(1 + mr, months) - 1);
+            }
+        }
+
+        let payInFull;
+        if (insurance > 0) {
+            payInFull = Math.max(0, cost - insurance);
+            discountBadge.style.display = 'none';
+        } else {
+            payInFull = cost * 0.90;
+            discountBadge.style.display = 'inline-block';
+        }
+
+        resTotal.innerText     = fmt(principal);
+        resMonthly.innerText   = fmt(monthly);
+        resPayInFull.innerText = fmt(payInFull);
+    }
+
+    // Builds a clean self-contained print page from current widget state
+    function buildPrintHTML(includeChecklist) {
+        const treatmentType = document.querySelector('#ortho-dashboard .type-btn.active').innerText;
+        const showBadge = discountBadge.style.display !== 'none';
+
+        // Capture Yes/No selections
+        function getRadio(name) {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? el.value.charAt(0).toUpperCase() + el.value.slice(1) : '—';
+        }
+        // Capture Step 1 checkboxes
+        const checkboxes = document.querySelectorAll('#ortho-dashboard .check-container input[type="checkbox"]');
+        const checkLabels = document.querySelectorAll('#ortho-dashboard .check-container span:last-child');
+        let checklistRows = '';
+        checkboxes.forEach((cb, i) => {
+            const label = checkLabels[i] ? checkLabels[i].innerText : '';
+            checklistRows += `<div class="cl-row ${cb.checked ? 'done' : ''}">
+                <span class="cl-box ${cb.checked ? 'checked' : ''}"></span>
+                <span class="cl-label">${label}</span>
+            </div>`;
+        });
+
+        const checklistHTML = includeChecklist ? `
+        <div class="section">
+            <div class="section-title">Step 1 — Treatment Plan</div>
+            ${checklistRows}
+        </div>
+        <div class="section">
+            <div class="section-title">Step 2 — Finances</div>
+            <div class="yn-row"><span>Pay in full — 10% off discount</span><span class="yn-val">${getRadio('ortho-finance1')}</span></div>
+            <div class="yn-row"><span>Payment plan (matching treatment length)</span><span class="yn-val">${getRadio('ortho-finance2')}</span></div>
+            <div class="yn-row"><span>Payment plan beyond treatment length</span><span class="yn-val">${getRadio('ortho-finance3')}</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Step 3 — No to Orthodontic Treatment</div>
+            <div class="yn-row"><span>Add to orthodontic Excel sheet?</span><span class="yn-val">${getRadio('ortho-excel')}</span></div>
+        </div>` : '';
+
+        return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Orthodontic Consultation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #111827; padding: 36px; }
+  .print-header { text-align: center; margin-bottom: 28px; padding-bottom: 18px; border-bottom: 2px solid #E8F2F9; }
+  .print-header h1 { font-size: 22px; color: #0CDBFD; font-weight: 700; margin-bottom: 6px; }
+  .print-header p { font-size: 13px; color: #4B5563; }
+  .print-body { display: flex; gap: 28px; align-items: flex-start; }
+  .left-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+  .section { background: #FAFCFE; border: 1px solid #E8F2F9; border-radius: 8px; padding: 16px 18px; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #111827; border-left: 3px solid #0CDBFD; padding-left: 8px; margin-bottom: 12px; }
+  .cl-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 13px; color: #111827; }
+  .cl-row.done .cl-label { color: #9CA3AF; text-decoration: line-through; }
+  .cl-box { width: 16px; height: 16px; min-width: 16px; border: 2px solid #C9DFEF; border-radius: 3px; margin-top: 1px; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cl-box.checked { background: #0CDBFD; border-color: #0CDBFD; position: relative; }
+  .cl-box.checked:after { content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .yn-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #E8EAEC; font-size: 13px; color: #4B5563; }
+  .yn-row:last-child { border-bottom: none; }
+  .yn-val { font-weight: 700; color: #111827; min-width: 30px; text-align: right; }
+  .print-results { width: 220px; background: #0CDBFD; border-radius: 10px; padding: 26px 18px; display: flex; flex-direction: column; gap: 18px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .calc-details { background: #fff; border: 1px solid #E8F2F9; border-radius: 8px; padding: 16px 18px; }
+  .calc-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #111827; border-left: 3px solid #0CDBFD; padding-left: 8px; margin-bottom: 12px; }
+  .calc-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E8EAEC; font-size: 13px; }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-row .lbl { color: #4B5563; }
+  .calc-row .val { font-weight: 700; color: #111827; }
+  .res-item { text-align: center; padding-bottom: 16px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+  .res-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .res-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; opacity: 0.7; margin-bottom: 6px; }
+  .res-value { font-size: 26px; font-weight: 700; }
+  .res-value.big { font-size: 36px; }
+  .badge { background: rgba(255,255,255,0.9); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; display: inline-block; margin-top: 8px; }
+  .res-disclaimer { font-size: 10px; opacity: 0.7; text-align: center; margin-top: 8px; line-height: 1.5; }
+  .print-footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid #E8EAEC; font-size: 11px; color: #4B5563; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="print-header">
+    <h1>Orthodontic Consultation${includeChecklist ? '' : ' — Payment Estimate'}</h1>
+    <p>This estimate is for informational purposes only and is subject to change.</p>
+  </div>
+  <div class="print-body">
+    <div class="left-col">
+      ${checklistHTML}
+      <div class="calc-details">
+        <div class="calc-title">Treatment Details</div>
+        <div class="calc-row"><span class="lbl">Treatment Type</span><span class="val">${treatmentType}</span></div>
+        <div class="calc-row"><span class="lbl">Treatment Cost</span><span class="val">${valCost.innerText}</span></div>
+        <div class="calc-row"><span class="lbl">Initial Payment</span><span class="val">${valDown.innerText}</span></div>
+        <div class="calc-row"><span class="lbl">Estimated Insurance</span><span class="val">${valIns.innerText}</span></div>
+        <div class="calc-row"><span class="lbl">Term Length</span><span class="val">${valMonths.innerText}</span></div>
+        <div class="calc-row"><span class="lbl">Interest Rate</span><span class="val">${valInterest.innerText}</span></div>
+      </div>
+    </div>
+    <div class="print-results">
+      <div class="res-item">
+        <div class="res-label">Monthly Payment</div>
+        <div class="res-value big">${resMonthly.innerText}</div>
+      </div>
+      <div class="res-item">
+        <div class="res-label">Total Financed</div>
+        <div class="res-value">${resTotal.innerText}</div>
+      </div>
+      <div class="res-item">
+        <div class="res-label">Pay in Full *</div>
+        <div class="res-value">${resPayInFull.innerText}</div>
+        ${showBadge ? '<span class="badge">Includes 10% Discount</span>' : ''}
+      </div>
+      <div class="res-disclaimer">* If insurance is utilized, the pay in full discount cannot be applied.</div>
+    </div>
+  </div>
+  <div class="print-footer">Oasis Dental &mdash; Adults, Kids &amp; Braces &mdash; (719) 781-6932 &mdash; 990 S Abilene St, Aurora, CO 80012</div>
+</body>
+</html>`;
+    }
+
+    // Print Estimate = calculator only (no checklist)
+    window.orthoPrintEstimate = function() {
+        const win = window.open('', '_blank', 'width=820,height=700');
+        win.document.write(buildPrintHTML(false));
+        win.document.close();
+        win.focus();
+        win.onload = function() { win.print(); };
+    };
+
+    // Save Page = full dashboard snapshot including checklist selections
+    window.orthoPrintFull = function() {
+        const win = window.open('', '_blank', 'width=820,height=700');
+        win.document.write(buildPrintHTML(true));
+        win.document.close();
+        win.focus();
+        win.onload = function() { win.print(); };
+    };
+
+    inputCost.addEventListener('input', orthoCalc);
+    inputDown.addEventListener('input', orthoCalc);
+    inputIns.addEventListener('input', orthoCalc);
+    inputMonths.addEventListener('input', orthoCalc);
+    inputInterest.addEventListener('input', orthoCalc);
+
+    orthoCalc();
+})();
+</script>
